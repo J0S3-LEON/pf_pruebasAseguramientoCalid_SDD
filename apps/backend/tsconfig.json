@@ -6,7 +6,7 @@
     "outDir": "dist",
     "baseUrl": ".",
     "paths": {
-      "@mindflow/shared": ["../../packages/shared/src/index.ts"],
+      "@mindflow/shared": ["../../packages/shared/dist/index.d.ts"],
       "@prisma/client": ["node_modules/.prisma/client"]
     }
   },

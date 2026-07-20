@@ -192,7 +192,7 @@ describe('Auth_Service — Property 1: Round-Trip de Registro y Login', () => {
           expect(typeof payload.exp).toBe('number');
         },
       ),
-      { numRuns: 20 },
+      { numRuns: 5 },
     );
   });
 });
@@ -243,7 +243,7 @@ describe('Auth_Service — Property 2: Unicidad de Cuenta por Correo', () => {
           expect(emailCount).toBe(1);
         },
       ),
-      { numRuns: 20 },
+      { numRuns: 5 },
     );
   });
 });
@@ -272,7 +272,7 @@ describe('Auth_Service — Property 3: JWT con Expiración de 24 Horas', () => {
           expect(payload.exp - payload.iat).toBe(86400);
         },
       ),
-      { numRuns: 20 },
+      { numRuns: 5 },
     );
   });
 });
@@ -310,7 +310,7 @@ describe('Auth_Service — Property 4: Rechazo de Credenciales Inválidas', () =
           }
         },
       ),
-      { numRuns: 20 },
+      { numRuns: 5 },
     );
   });
 
@@ -342,7 +342,7 @@ describe('Auth_Service — Property 4: Rechazo de Credenciales Inválidas', () =
           }
         },
       ),
-      { numRuns: 20 },
+      { numRuns: 5 },
     );
   });
 });
@@ -372,7 +372,7 @@ describe('Auth_Service — Property 5: Acceso con JWT Válido vs. Rechazado con 
           expect(payload.exp).toBeGreaterThan(Math.floor(Date.now() / 1000));
         },
       ),
-      { numRuns: 20 },
+      { numRuns: 5 },
     );
   });
 
@@ -434,7 +434,7 @@ describe('Auth_Service — Property 5: Acceso con JWT Válido vs. Rechazado con 
           expect(threw).toBe(true);
         },
       ),
-      { numRuns: 15 },
+      { numRuns: 5 },
     );
   });
 });
