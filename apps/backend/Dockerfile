@@ -3,8 +3,6 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-ENV NODE_ENV=production
-
 # Copy root workspace files needed to install dependencies for the monorepo
 COPY package.json package-lock.json* ./
 COPY apps/backend/package.json ./apps/backend/package.json
@@ -34,6 +32,8 @@ RUN npm run build --workspace @mindflow/backend
 FROM node:20-alpine AS runner
 
 WORKDIR /app
+
+ENV NODE_ENV=production
 
 # Copy only production artifacts from builder
 COPY --from=builder /app/apps/backend/dist ./apps/backend/dist
