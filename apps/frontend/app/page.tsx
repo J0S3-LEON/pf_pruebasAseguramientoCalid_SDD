@@ -1,6 +1,15 @@
 import Link from 'next/link';
+import { auth } from '@/auth';
 
-export default function Home() {
+export default async function Home() {
+  const session = await auth();
+  const isAuthenticated = Boolean(session);
+
+  const protectedHref = (destination: string) =>
+    isAuthenticated
+      ? destination
+      : `/auth/login?callbackUrl=${encodeURIComponent(destination)}`;
+
   return (
     <main className="min-h-screen bg-background flex flex-col">
       {/* ── Header ── */}
@@ -25,16 +34,16 @@ export default function Home() {
           </div>
           <nav className="flex items-center gap-3">
             <Link
-              href="/auth/login"
+              href={isAuthenticated ? '/dashboard' : '/auth/login'}
               className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
             >
-              Iniciar sesión
+              {isAuthenticated ? 'Ir al dashboard' : 'Iniciar sesión'}
             </Link>
             <Link
-              href="/auth/register"
+              href={isAuthenticated ? '/ema' : '/auth/register'}
               className="text-sm font-medium bg-primary text-primary-foreground px-4 py-2 rounded-md hover:bg-primary/90 transition-colors"
             >
-              Crear cuenta
+              {isAuthenticated ? 'Iniciar EMA' : 'Crear cuenta'}
             </Link>
           </nav>
         </div>
@@ -60,19 +69,19 @@ export default function Home() {
 
           <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
             <Link
-              href="/auth/register"
+              href={isAuthenticated ? '/dashboard' : '/auth/register'}
               className="inline-flex items-center justify-center gap-2 bg-primary text-primary-foreground font-semibold px-8 py-3 rounded-lg hover:bg-primary/90 transition-colors text-base"
             >
-              Comenzar gratis
+              {isAuthenticated ? 'Continuar' : 'Comenzar gratis'}
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
               </svg>
             </Link>
             <Link
-              href="/auth/login"
+              href={protectedHref('/ema')}
               className="inline-flex items-center justify-center gap-2 border border-border text-foreground font-semibold px-8 py-3 rounded-lg hover:bg-muted transition-colors text-base"
             >
-              Ya tengo cuenta
+              {isAuthenticated ? 'Evaluar mi fatiga' : 'Ya tengo cuenta'}
             </Link>
           </div>
         </div>
@@ -82,7 +91,7 @@ export default function Home() {
       <section className="px-6 pb-20">
         <div className="mx-auto max-w-4xl grid grid-cols-1 sm:grid-cols-3 gap-6">
           {/* Card 1 */}
-          <Link href="/auth/login" className="group block rounded-xl border bg-card p-6 hover:shadow-md transition-shadow">
+          <Link href={protectedHref('/ema')} className="group block rounded-xl border bg-card p-6 hover:shadow-md transition-shadow">
             <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-blue-100 text-blue-600">
               <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
@@ -96,7 +105,7 @@ export default function Home() {
           </Link>
 
           {/* Card 2 */}
-          <Link href="/dashboard" className="group block rounded-xl border bg-card p-6 hover:shadow-md transition-shadow">
+          <Link href={protectedHref('/dashboard')} className="group block rounded-xl border bg-card p-6 hover:shadow-md transition-shadow">
             <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-purple-100 text-purple-600">
               <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2" />
@@ -110,7 +119,7 @@ export default function Home() {
           </Link>
 
           {/* Card 3 */}
-          <Link href="/auth/register" className="group block rounded-xl border bg-card p-6 hover:shadow-md transition-shadow">
+          <Link href={protectedHref('/dashboard#micro-objectives')} className="group block rounded-xl border bg-card p-6 hover:shadow-md transition-shadow">
             <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-green-100 text-green-600">
               <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -120,7 +129,7 @@ export default function Home() {
             <p className="text-sm text-muted-foreground">
               IA descompone tus tareas complejas en pasos de ≤ 25 minutos.
             </p>
-            <div className="mt-3 text-xs font-medium text-primary">Registrarse →</div>
+            <div className="mt-3 text-xs font-medium text-primary">Ver micro-objetivos →</div>
           </Link>
         </div>
       </section>

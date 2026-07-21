@@ -46,7 +46,7 @@ export default function DashboardPage() {
         </section>
 
         {/* Column 2 — Micro-objetivos pendientes */}
-        <section aria-labelledby="mo-heading">
+        <section id="micro-objectives" aria-labelledby="mo-heading" className="scroll-mt-20">
           <h2
             id="mo-heading"
             className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground"
