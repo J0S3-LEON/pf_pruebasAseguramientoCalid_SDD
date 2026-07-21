@@ -6,7 +6,9 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
-      - mindflow_pgdata:/var/lib/postgresql/data
+      # PostgreSQL 18+ usa PGDATA=/var/lib/postgresql/18/docker.
+      # Se monta el directorio padre para persistencia y futuras actualizaciones.
+      - mindflow_pgdata:/var/lib/postgresql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 5s

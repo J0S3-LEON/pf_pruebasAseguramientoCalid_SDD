@@ -71,6 +71,8 @@ Servicios del Compose:
 - API: `http://backend:3001/api/v1`, accesible únicamente dentro de la red privada.
 - PostgreSQL: `db:5432`, accesible únicamente dentro de la red privada.
 
+PostgreSQL 18 guarda sus datos bajo `/var/lib/postgresql/18/docker`; por ello el volumen persistente se monta en `/var/lib/postgresql`, no en la ruta histórica `/var/lib/postgresql/data` usada hasta PostgreSQL 17.
+
 ## Verificación antes del despliegue
 
 ```bash

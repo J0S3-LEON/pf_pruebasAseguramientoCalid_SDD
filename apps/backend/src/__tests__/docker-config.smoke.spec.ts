@@ -39,4 +39,11 @@ describe('Docker Configuration Smoke Tests', () => {
   it('should declare mindflow_pgdata volume', () => {
     expect(composeContent).toContain('mindflow_pgdata');
   });
+
+  it('should mount PostgreSQL 18 data at its supported parent path', () => {
+    expect(composeContent).toContain('mindflow_pgdata:/var/lib/postgresql');
+    expect(composeContent).not.toContain(
+      'mindflow_pgdata:/var/lib/postgresql/data',
+    );
+  });
 });
