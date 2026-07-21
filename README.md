@@ -65,11 +65,11 @@ docker compose exec backend npm run prisma:migrate:deploy --workspace @mindflow/
 docker compose logs -f backend frontend
 ```
 
-Servicios locales:
+Servicios del Compose:
 
-- Frontend: `http://localhost:3000`
-- API: `http://localhost:3001/api/v1`
-- PostgreSQL: `localhost:5432`
+- Frontend: puerto interno `3000`; es el único servicio al que se asigna un dominio en Dokploy.
+- API: `http://backend:3001/api/v1`, accesible únicamente dentro de la red privada.
+- PostgreSQL: `db:5432`, accesible únicamente dentro de la red privada.
 
 ## Verificación antes del despliegue
 
@@ -147,7 +147,7 @@ Pendiente antes de publicar:
 - [ ] `.env` no está versionado y los secretos se almacenan en el proveedor.
 - [ ] `JWT_SECRET` y `AUTH_SECRET` son distintos, aleatorios y tienen al menos 32 caracteres.
 - [ ] `FRONTEND_URL` contiene únicamente los dominios autorizados.
-- [ ] `NEXT_PUBLIC_API_URL` usa HTTPS y termina en `/api/v1`.
+- [ ] `NEXT_PUBLIC_API_URL=http://backend:3001/api/v1`; el navegador consume `/api/v1` mediante el proxy de Next.js.
 - [ ] `AUTH_DEBUG=false` y `NODE_ENV=production`.
 - [ ] `prisma migrate deploy` finaliza antes de arrancar la nueva versión.
 - [ ] Los builds de backend y frontend pasan desde una instalación limpia.

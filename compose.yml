@@ -12,8 +12,10 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
-    ports:
-      - "5432:5432"
+    expose:
+      - "5432"
+    networks:
+      - internal
 
   backend:
     build:
@@ -26,18 +28,20 @@ services:
       AI_SERVICE_API_KEY: ${AI_SERVICE_API_KEY}
       FRONTEND_URL: ${FRONTEND_URL}
       PORT: ${PORT:-3001}
-    ports:
-      - "${PORT:-3001}:${PORT:-3001}"
+    expose:
+      - "3001"
     depends_on:
       db:
         condition: service_healthy
+    networks:
+      - internal
 
   frontend:
     build:
       context: .
       dockerfile: apps/frontend/Dockerfile
       args:
-        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:3001/api/v1}
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://backend:3001/api/v1}
         NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL:-http://localhost:3000}
     environment:
       NODE_ENV: ${NODE_ENV:-development}
@@ -45,11 +49,17 @@ services:
       AUTH_DEBUG: ${AUTH_DEBUG:-false}
       NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://backend:3001/api/v1}
       NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL:-http://localhost:3000}
-    ports:
-      - "3000:3000"
+    expose:
+      - "3000"
     depends_on:
       - backend
+    networks:
+      - internal
 
 volumes:
   mindflow_pgdata:
     name: mindflow_pgdata
+
+networks:
+  internal:
+    internal: true
