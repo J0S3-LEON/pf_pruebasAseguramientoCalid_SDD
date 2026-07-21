@@ -15,6 +15,7 @@ import { SessionModule } from './session/session.module';
 import { DBWriterModule } from './db-writer/db-writer.module';
 import { NotificationModule } from './notification/notification.module';
 import { TaskDecomposerModule } from './task-decomposer/task-decomposer.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { TaskDecomposerModule } from './task-decomposer/task-decomposer.module';
     NotificationModule,
     // Task_Decomposer — Descomposición adaptativa — Requisitos 4.1–4.6
     TaskDecomposerModule,
+    DashboardModule,
   ],
   controllers: [],
   providers: [

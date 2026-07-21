@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Sparkles } from 'lucide-react';
 import { auth } from '@/auth';
 
 export default async function Home() {
@@ -15,23 +16,14 @@ export default async function Home() {
       {/* ── Header ── */}
       <header className="border-b bg-background/95 backdrop-blur sticky top-0 z-10">
         <div className="mx-auto max-w-5xl px-6 h-14 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6 text-primary"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z"
-              />
-            </svg>
+          <Link
+            href="/"
+            aria-label="Ir a la página principal"
+            className="flex items-center gap-2 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          >
+            <Sparkles className="h-6 w-6 text-primary" aria-hidden="true" />
             <span className="text-lg font-bold tracking-tight">MindFlow</span>
-          </div>
+          </Link>
           <nav className="flex items-center gap-3">
             <Link
               href={isAuthenticated ? '/dashboard' : '/auth/login'}

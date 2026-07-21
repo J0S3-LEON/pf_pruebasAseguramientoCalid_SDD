@@ -59,6 +59,12 @@ export class TaskService {
       orderBy: {
         deadline: 'asc',
       },
+      include: {
+        microObjectives: {
+          where: { isAuditOnly: false },
+          orderBy: { createdAt: 'asc' },
+        },
+      },
     });
   }
 
