@@ -26,7 +26,8 @@ function getStudentId(token: string): string | undefined {
 }
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
-  debug: process.env.NODE_ENV !== 'production',
+  // Activar temporalmente con AUTH_DEBUG=true cuando se necesiten trazas.
+  debug: process.env.AUTH_DEBUG === 'true',
   trustHost: true,
   pages: {
     signIn: '/auth/login',

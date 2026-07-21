@@ -43,6 +43,8 @@ export class AuthService {
     email: string,
     password: string,
   ): Promise<{ message: string }> {
+    email = email.trim().toLowerCase();
+
     // Check for duplicate email — Requisito 1.2
     const existing = await this.prisma.student.findUnique({
       where: { email },
@@ -81,6 +83,8 @@ export class AuthService {
    * Requisitos: 1.3, 1.4
    */
   async login(email: string, password: string): Promise<{ token: string }> {
+    email = email.trim().toLowerCase();
+
     const genericError = new UnauthorizedException(
       'Credenciales inválidas.',
     );
