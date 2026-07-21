@@ -15,11 +15,7 @@ import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 import { Sparkles } from 'lucide-react';
 
-export default function EmaLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function EmaLayout({ children }: { children: React.ReactNode }) {
   async function handleLogout() {
     await signOut({ callbackUrl: '/auth/login' });
   }
@@ -38,12 +34,7 @@ export default function EmaLayout({
             <span className="text-base font-semibold tracking-tight">MindFlow — EMA</span>
           </Link>
 
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleLogout}
-            className="text-sm"
-          >
+          <Button variant="outline" size="sm" onClick={handleLogout} className="text-sm">
             Cerrar sesión
           </Button>
         </div>

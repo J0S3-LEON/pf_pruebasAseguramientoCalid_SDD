@@ -46,9 +46,7 @@ import { signIn } from 'next-auth/react';
 const registerSchema = z
   .object({
     email: z.string().email('Introduce un correo electrónico válido'),
-    password: z
-      .string()
-      .min(8, 'La contraseña debe tener al menos 8 caracteres'),
+    password: z.string().min(8, 'La contraseña debe tener al menos 8 caracteres'),
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
@@ -101,7 +99,9 @@ export default function RegisterPage() {
         redirect: false,
       });
 
-      if (result?.error) throw new Error(result.error);
+      if (result?.error) {
+        throw new Error(result.error);
+      }
 
       router.replace('/dashboard');
       router.refresh();
@@ -118,13 +118,10 @@ export default function RegisterPage() {
         ) {
           form.setError('email', {
             type: 'server',
-            message:
-              'Este correo electrónico ya está registrado. ¿Quieres iniciar sesión?',
+            message: 'Este correo electrónico ya está registrado. ¿Quieres iniciar sesión?',
           });
         } else {
-          setServerError(
-            error.message || 'Ocurrió un error inesperado. Inténtalo de nuevo.',
-          );
+          setServerError(error.message || 'Ocurrió un error inesperado. Inténtalo de nuevo.');
         }
       } else {
         setServerError('Ocurrió un error inesperado. Inténtalo de nuevo.');
@@ -208,10 +205,7 @@ export default function RegisterPage() {
 
             {/* Error del servidor */}
             {serverError && (
-              <p
-                role="alert"
-                className="text-sm font-medium text-destructive text-center"
-              >
+              <p role="alert" className="text-sm font-medium text-destructive text-center">
                 {serverError}
               </p>
             )}

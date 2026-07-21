@@ -7,9 +7,7 @@ export default async function Home() {
   const isAuthenticated = Boolean(session);
 
   const protectedHref = (destination: string) =>
-    isAuthenticated
-      ? destination
-      : `/auth/login?callbackUrl=${encodeURIComponent(destination)}`;
+    isAuthenticated ? destination : `/auth/login?callbackUrl=${encodeURIComponent(destination)}`;
 
   return (
     <main className="min-h-screen bg-background flex flex-col">
@@ -50,13 +48,12 @@ export default async function Home() {
           </div>
 
           <h1 className="text-5xl font-bold tracking-tight text-foreground">
-            Reduce tu fatiga cognitiva con{' '}
-            <span className="text-primary">MindFlow</span>
+            Reduce tu fatiga cognitiva con <span className="text-primary">MindFlow</span>
           </h1>
 
           <p className="text-lg text-muted-foreground leading-relaxed">
-            Un chatbot EMA que evalúa tu estado mental y descompone tus tareas
-            académicas en micro-objetivos de 25 minutos o menos.
+            Un chatbot EMA que evalúa tu estado mental y descompone tus tareas académicas en
+            micro-objetivos de 25 minutos o menos.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
@@ -65,7 +62,13 @@ export default async function Home() {
               className="inline-flex items-center justify-center gap-2 bg-primary text-primary-foreground font-semibold px-8 py-3 rounded-lg hover:bg-primary/90 transition-colors text-base"
             >
               {isAuthenticated ? 'Continuar' : 'Comenzar gratis'}
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
               </svg>
             </Link>
@@ -83,13 +86,28 @@ export default async function Home() {
       <section className="px-6 pb-20">
         <div className="mx-auto max-w-4xl grid grid-cols-1 sm:grid-cols-3 gap-6">
           {/* Card 1 */}
-          <Link href={protectedHref('/ema')} className="group block rounded-xl border bg-card p-6 hover:shadow-md transition-shadow">
+          <Link
+            href={protectedHref('/ema')}
+            className="group block rounded-xl border bg-card p-6 hover:shadow-md transition-shadow"
+          >
             <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-blue-100 text-blue-600">
-              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+              <svg
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                />
               </svg>
             </div>
-            <h3 className="font-semibold text-foreground mb-1 group-hover:text-primary transition-colors">Chatbot EMA</h3>
+            <h3 className="font-semibold text-foreground mb-1 group-hover:text-primary transition-colors">
+              Chatbot EMA
+            </h3>
             <p className="text-sm text-muted-foreground">
               Evalúa tu nivel de fatiga con una simple pregunta del 1 al 5.
             </p>
@@ -97,13 +115,28 @@ export default async function Home() {
           </Link>
 
           {/* Card 2 */}
-          <Link href={protectedHref('/dashboard')} className="group block rounded-xl border bg-card p-6 hover:shadow-md transition-shadow">
+          <Link
+            href={protectedHref('/dashboard')}
+            className="group block rounded-xl border bg-card p-6 hover:shadow-md transition-shadow"
+          >
             <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-purple-100 text-purple-600">
-              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2" />
+              <svg
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"
+                />
               </svg>
             </div>
-            <h3 className="font-semibold text-foreground mb-1 group-hover:text-primary transition-colors">Dashboard</h3>
+            <h3 className="font-semibold text-foreground mb-1 group-hover:text-primary transition-colors">
+              Dashboard
+            </h3>
             <p className="text-sm text-muted-foreground">
               Visualiza tus tareas, micro-objetivos y el historial de fatiga.
             </p>
@@ -111,13 +144,28 @@ export default async function Home() {
           </Link>
 
           {/* Card 3 */}
-          <Link href={protectedHref('/dashboard#micro-objectives')} className="group block rounded-xl border bg-card p-6 hover:shadow-md transition-shadow">
+          <Link
+            href={protectedHref('/dashboard#micro-objectives')}
+            className="group block rounded-xl border bg-card p-6 hover:shadow-md transition-shadow"
+          >
             <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-green-100 text-green-600">
-              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              <svg
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
               </svg>
             </div>
-            <h3 className="font-semibold text-foreground mb-1 group-hover:text-primary transition-colors">Micro-objetivos</h3>
+            <h3 className="font-semibold text-foreground mb-1 group-hover:text-primary transition-colors">
+              Micro-objetivos
+            </h3>
             <p className="text-sm text-muted-foreground">
               IA descompone tus tareas complejas en pasos de ≤ 25 minutos.
             </p>

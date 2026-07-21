@@ -12,18 +12,10 @@
  */
 
 import useSWR from 'swr';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { apiFetch } from '@/lib/api';
-import {
-  MicroObjectiveItem,
-  type MicroObjective,
-} from './MicroObjectiveItem';
+import { MicroObjectiveItem, type MicroObjective } from './MicroObjectiveItem';
 import type { Task } from './TaskList';
 import { CheckCircle2, Sparkles } from 'lucide-react';
 
@@ -95,7 +87,10 @@ export function MicroObjectivesPanel() {
   return (
     <div className="flex flex-col gap-4">
       {tasksWithPendingMOs.map((task) => (
-        <Card key={task.id} className="overflow-hidden border-emerald-500/15 bg-card/90 shadow-sm transition-all hover:border-emerald-500/30 hover:shadow-md">
+        <Card
+          key={task.id}
+          className="overflow-hidden border-emerald-500/15 bg-card/90 shadow-sm transition-all hover:border-emerald-500/30 hover:shadow-md"
+        >
           <div className="h-1 bg-gradient-to-r from-emerald-500 to-teal-400" />
           <CardHeader className="pb-2">
             <CardTitle className="flex items-center gap-2 text-sm font-semibold line-clamp-1">

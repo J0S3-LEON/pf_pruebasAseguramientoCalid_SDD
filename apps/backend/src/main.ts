@@ -59,8 +59,13 @@ async function bootstrap(): Promise<void> {
   app.use(helmet());
 
   // CORS restringido al origen del frontend — Requisito 9.5
+  const allowedOrigins = (process.env.FRONTEND_URL ?? 'http://localhost:3000')
+    .split(',')
+    .map((origin) => origin.trim())
+    .filter(Boolean);
   app.enableCors({
-    origin: process.env.FRONTEND_URL ?? 'http://localhost:3000',
+    origin: allowedOrigins,
+    credentials: true,
   });
 
   // Prefijo global de la API — Requisito 9.3
@@ -84,8 +89,8 @@ async function bootstrap(): Promise<void> {
   );
 
   // Puerto configurable mediante variable de entorno
-  const port = process.env.PORT ?? 3001;
-  await app.listen(port);
+  const port = Number(process.env.PORT ?? 3001);
+  await app.listen(port, '0.0.0.0');
 }
 
 bootstrapWithRetry();

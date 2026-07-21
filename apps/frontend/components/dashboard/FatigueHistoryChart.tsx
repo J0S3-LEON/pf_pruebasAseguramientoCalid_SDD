@@ -21,13 +21,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from 'recharts';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { apiFetch } from '@/lib/api';
 import { EmptyState } from './EmptyState';
@@ -71,11 +65,7 @@ function formatChartDate(iso: string): string {
 function toChartData(records: FatigueRecord[]): ChartDataPoint[] {
   // Sort chronologically ASC — Req 5.3 (History Ordering Invariant)
   return [...records]
-    .sort(
-      (a, b) =>
-        new Date(a.recordedAtUtc).getTime() -
-        new Date(b.recordedAtUtc).getTime(),
-    )
+    .sort((a, b) => new Date(a.recordedAtUtc).getTime() - new Date(b.recordedAtUtc).getTime())
     .map((r) => ({
       date: formatChartDate(r.recordedAtUtc),
       score: r.fatigueScore,
@@ -96,14 +86,15 @@ interface CustomTooltipProps {
 }
 
 function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
-  if (!active || !payload || payload.length === 0) return null;
+  if (!active || !payload || payload.length === 0) {
+    return null;
+  }
 
   return (
     <div className="rounded-lg border bg-background p-2 shadow-sm text-sm">
       <p className="font-medium text-foreground">{label}</p>
       <p className="text-muted-foreground">
-        Fatiga:{' '}
-        <span className="font-semibold text-foreground">{payload[0]?.value}</span>
+        Fatiga: <span className="font-semibold text-foreground">{payload[0]?.value}</span>
         /5
       </p>
     </div>
@@ -167,17 +158,16 @@ export function FatigueHistoryChart() {
     <Card className="overflow-hidden border-cyan-500/15 bg-card/90 shadow-sm">
       <div className="h-1 bg-gradient-to-r from-cyan-500 via-sky-500 to-violet-500" />
       <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-base"><BrainCircuit className="h-5 w-5 text-cyan-500" /> Historial de fatiga</CardTitle>
+        <CardTitle className="flex items-center gap-2 text-base">
+          <BrainCircuit className="h-5 w-5 text-cyan-500" /> Historial de fatiga
+        </CardTitle>
         <CardDescription className="text-xs">
           Últimas {fatigueHistory.length} sesiones EMA
         </CardDescription>
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height={220}>
-          <LineChart
-            data={chartData}
-            margin={{ top: 8, right: 16, left: -16, bottom: 4 }}
-          >
+          <LineChart data={chartData} margin={{ top: 8, right: 16, left: -16, bottom: 4 }}>
             <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
             <XAxis
               dataKey="date"

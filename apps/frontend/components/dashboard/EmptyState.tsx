@@ -38,9 +38,17 @@ export function EmptyState({
       <CardContent className="flex flex-col items-center gap-4">
         <p className="text-sm text-muted-foreground max-w-sm">{description}</p>
         {onAction ? (
-          <Button onClick={onAction} className="mt-2"><Sparkles className="mr-2 h-4 w-4" />{actionLabel}</Button>
+          <Button onClick={onAction} className="mt-2">
+            <Sparkles className="mr-2 h-4 w-4" />
+            {actionLabel}
+          </Button>
         ) : (
-          <Button asChild className="mt-2"><Link href="/ema"><Sparkles className="mr-2 h-4 w-4" />{actionLabel}</Link></Button>
+          <Button asChild className="mt-2">
+            <Link href="/ema">
+              <Sparkles className="mr-2 h-4 w-4" />
+              {actionLabel}
+            </Link>
+          </Button>
         )}
       </CardContent>
     </Card>

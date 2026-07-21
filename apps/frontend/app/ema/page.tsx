@@ -28,12 +28,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 // ---------------------------------------------------------------------------
 // Zod schema — only integers in [1, 5]
@@ -125,7 +120,9 @@ export default function EmaPage() {
           apiFetch<Task[]>('/tasks'),
         ]);
 
-        if (cancelled) return;
+        if (cancelled) {
+          return;
+        }
 
         setSessionId(session.sessionId);
         setTasks(activeTasks);
@@ -139,9 +136,7 @@ export default function EmaPage() {
         ]);
       } catch {
         if (!cancelled) {
-          setSessionError(
-            'No se pudo iniciar la sesión. Por favor recarga la página.',
-          );
+          setSessionError('No se pudo iniciar la sesión. Por favor recarga la página.');
         }
       }
     }
@@ -163,7 +158,9 @@ export default function EmaPage() {
   // 2. Handle user submission
   // -------------------------------------------------------------------------
   async function handleSend() {
-    if (!sessionId || isLoading || chatFinished) return;
+    if (!sessionId || isLoading || chatFinished) {
+      return;
+    }
 
     const raw = inputValue.trim();
 
@@ -180,24 +177,18 @@ export default function EmaPage() {
     const score = parsed.data;
 
     // Append user message
-    setMessages((prev) => [
-      ...prev,
-      { id: uid(), role: 'user', text: raw },
-    ]);
+    setMessages((prev) => [...prev, { id: uid(), role: 'user', text: raw }]);
     setInputValue('');
     setIsLoading(true);
 
     try {
-      const data = await apiFetch<FatigueResponse>(
-        `/sessions/${sessionId}/fatigue`,
-        {
-          method: 'POST',
-          body: {
-            score,
-            ...(selectedTaskId && { taskId: selectedTaskId }),
-          },
+      const data = await apiFetch<FatigueResponse>(`/sessions/${sessionId}/fatigue`, {
+        method: 'POST',
+        body: {
+          score,
+          ...(selectedTaskId && { taskId: selectedTaskId }),
         },
-      );
+      });
 
       // score ≥ 4 with micro-objectives → show cards
       if (score >= 4 && data.microObjectives && data.microObjectives.length > 0) {
@@ -246,11 +237,14 @@ export default function EmaPage() {
         setChatFinished(true);
       }
     } catch (err: unknown) {
-      const message =
-        err instanceof Error ? err.message : 'Error desconocido';
+      const message = err instanceof Error ? err.message : 'Error desconocido';
 
       // HTTP 400 → re-prompt with inline bot message
-      if (message.includes('400') || message.toLowerCase().includes('invalid') || message.toLowerCase().includes('inválido')) {
+      if (
+        message.includes('400') ||
+        message.toLowerCase().includes('invalid') ||
+        message.toLowerCase().includes('inválido')
+      ) {
         setMessages((prev) => [
           ...prev,
           {
@@ -268,9 +262,7 @@ export default function EmaPage() {
             role: 'bot',
             text: 'Hubo un problema al procesar tu respuesta. Mostrando tu tarea original como alternativa.',
           },
-          ...(fallbackTask
-            ? [{ id: uid(), role: 'bot' as const, task: fallbackTask }]
-            : []),
+          ...(fallbackTask ? [{ id: uid(), role: 'bot' as const, task: fallbackTask }] : []),
         ]);
         setChatFinished(true);
       }
@@ -382,7 +374,9 @@ export default function EmaPage() {
               value={inputValue}
               onChange={(e) => {
                 setInputValue(e.target.value);
-                if (inputError) setInputError(null);
+                if (inputError) {
+                  setInputError(null);
+                }
               }}
               onKeyDown={handleKeyDown}
               disabled={isLoading || chatFinished || !sessionId}
@@ -402,11 +396,7 @@ export default function EmaPage() {
 
           {/* Inline validation error — NOT sent to backend */}
           {inputError && (
-            <p
-              id="ema-score-error"
-              role="alert"
-              className="text-sm font-medium text-destructive"
-            >
+            <p id="ema-score-error" role="alert" className="text-sm font-medium text-destructive">
               {inputError}
             </p>
           )}

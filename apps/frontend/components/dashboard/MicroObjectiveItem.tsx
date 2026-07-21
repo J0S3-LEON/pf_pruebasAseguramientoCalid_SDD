@@ -37,10 +37,7 @@ interface PatchMicroObjectiveResponse {
   isCompleted: boolean;
 }
 
-export function MicroObjectiveItem({
-  microObjective,
-  onToggle,
-}: MicroObjectiveItemProps) {
+export function MicroObjectiveItem({ microObjective, onToggle }: MicroObjectiveItemProps) {
   const [isCompleted, setIsCompleted] = useState(microObjective.isCompleted);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -91,9 +88,7 @@ export function MicroObjectiveItem({
         className={[
           'text-sm leading-relaxed cursor-pointer select-none',
           'transition-opacity duration-150',
-          isCompleted
-            ? 'line-through text-muted-foreground opacity-60'
-            : 'text-foreground',
+          isCompleted ? 'line-through text-muted-foreground opacity-60' : 'text-foreground',
           isLoading ? 'opacity-50' : '',
         ]
           .filter(Boolean)

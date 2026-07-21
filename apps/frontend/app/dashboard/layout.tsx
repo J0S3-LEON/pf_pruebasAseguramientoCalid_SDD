@@ -15,11 +15,7 @@ import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 import { LogOut, Sparkles } from 'lucide-react';
 
-export default function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   async function handleLogout() {
     await signOut({ callbackUrl: '/auth/login' });
   }
@@ -42,12 +38,7 @@ export default function DashboardLayout({
 
           <div className="flex items-center gap-2">
             <ThemeToggleWrapper />
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleLogout}
-              className="text-sm"
-            >
+            <Button variant="outline" size="sm" onClick={handleLogout} className="text-sm">
               <LogOut className="mr-2 h-4 w-4" aria-hidden="true" />
               Cerrar sesión
             </Button>

@@ -79,22 +79,18 @@ export default function LoginPage() {
         redirect: false,
       });
 
-      if (result?.error) throw new Error(result.error);
+      if (result?.error) {
+        throw new Error(result.error);
+      }
 
-      const callbackUrl = new URLSearchParams(window.location.search).get(
-        'callbackUrl',
-      );
-      router.replace(
-        callbackUrl?.startsWith('/') ? callbackUrl : '/dashboard',
-      );
+      const callbackUrl = new URLSearchParams(window.location.search).get('callbackUrl');
+      router.replace(callbackUrl?.startsWith('/') ? callbackUrl : '/dashboard');
       router.refresh();
     } catch (error: unknown) {
       // HTTP 401 → credenciales incorrectas.
       // Se muestra un mensaje genérico para no revelar si el email existe o no.
       if (error instanceof Error) {
-        setServerError(
-          'Correo electrónico o contraseña incorrectos. Inténtalo de nuevo.',
-        );
+        setServerError('Correo electrónico o contraseña incorrectos. Inténtalo de nuevo.');
       } else {
         setServerError('Ocurrió un error inesperado. Inténtalo de nuevo.');
       }
@@ -107,9 +103,7 @@ export default function LoginPage() {
     <Card>
       <CardHeader className="space-y-1">
         <CardTitle className="text-2xl text-center">Iniciar sesión</CardTitle>
-        <CardDescription className="text-center">
-          Accede a tu cuenta MindFlow
-        </CardDescription>
+        <CardDescription className="text-center">Accede a tu cuenta MindFlow</CardDescription>
       </CardHeader>
 
       <CardContent>
@@ -157,10 +151,7 @@ export default function LoginPage() {
 
             {/* Error genérico del servidor (HTTP 401 u otros errores) */}
             {serverError && (
-              <p
-                role="alert"
-                className="text-sm font-medium text-destructive text-center"
-              >
+              <p role="alert" className="text-sm font-medium text-destructive text-center">
                 {serverError}
               </p>
             )}

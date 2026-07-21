@@ -74,9 +74,7 @@ export async function apiFetch<T = unknown>(
 
   if (!response.ok) {
     const errorMessage =
-      typeof envelope.error === 'string'
-        ? envelope.error
-        : `Error HTTP ${response.status}`;
+      typeof envelope.error === 'string' ? envelope.error : `Error HTTP ${response.status}`;
     throw new Error(errorMessage);
   }
 

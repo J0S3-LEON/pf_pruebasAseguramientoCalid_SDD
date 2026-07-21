@@ -12,21 +12,12 @@
  */
 
 import useSWR from 'swr';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { apiFetch } from '@/lib/api';
-import {
-  MicroObjectiveItem,
-  type MicroObjective,
-} from './MicroObjectiveItem';
+import { MicroObjectiveItem, type MicroObjective } from './MicroObjectiveItem';
 import { DrawerWrapper } from '@/components/wrappers';
 import { AlertCircle, CalendarDays, ChevronRight, ListTodo } from 'lucide-react';
 
@@ -54,15 +45,17 @@ function formatDeadline(iso: string): string {
   });
 }
 
-function getDeadlineBadgeVariant(
-  iso: string,
-): 'destructive' | 'default' | 'secondary' {
+function getDeadlineBadgeVariant(iso: string): 'destructive' | 'default' | 'secondary' {
   const now = new Date();
   const deadline = new Date(iso);
   const hoursLeft = (deadline.getTime() - now.getTime()) / (1000 * 60 * 60);
 
-  if (hoursLeft < 0) return 'destructive';
-  if (hoursLeft <= 24) return 'default';
+  if (hoursLeft < 0) {
+    return 'destructive';
+  }
+  if (hoursLeft <= 24) {
+    return 'default';
+  }
   return 'secondary';
 }
 
@@ -129,18 +122,18 @@ export function TaskList() {
   return (
     <div className="flex flex-col gap-4">
       {tasks.map((task) => {
-        const pendingMOs =
-          task.microObjectives?.filter((mo) => !mo.isCompleted) ?? [];
+        const pendingMOs = task.microObjectives?.filter((mo) => !mo.isCompleted) ?? [];
         const badgeVariant = getDeadlineBadgeVariant(task.deadline);
 
         return (
-          <Card key={task.id} className="overflow-hidden border-primary/10 bg-card/90 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/25 hover:shadow-lg">
+          <Card
+            key={task.id}
+            className="overflow-hidden border-primary/10 bg-card/90 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/25 hover:shadow-lg"
+          >
             <div className="h-1 bg-gradient-to-r from-violet-500 via-indigo-500 to-cyan-400" />
             <CardHeader className="pb-2">
               <div className="flex items-start justify-between gap-2 flex-wrap">
-                <CardTitle className="text-base font-semibold leading-snug">
-                  {task.name}
-                </CardTitle>
+                <CardTitle className="text-base font-semibold leading-snug">{task.name}</CardTitle>
                 <Badge variant={badgeVariant} className="shrink-0 gap-1 text-xs">
                   <CalendarDays className="h-3 w-3" />
                   {formatDeadline(task.deadline)}
@@ -170,8 +163,13 @@ export function TaskList() {
             <CardContent className="pt-0 pb-3">
               <DrawerWrapper
                 trigger={
-                  <Button variant="ghost" size="sm" className="group/btn h-8 px-2 text-xs text-primary hover:bg-primary/10 hover:text-primary">
-                    Ver detalles <ChevronRight className="ml-1 h-3.5 w-3.5 transition-transform group-hover/btn:translate-x-0.5" />
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="group/btn h-8 px-2 text-xs text-primary hover:bg-primary/10 hover:text-primary"
+                  >
+                    Ver detalles{' '}
+                    <ChevronRight className="ml-1 h-3.5 w-3.5 transition-transform group-hover/btn:translate-x-0.5" />
                   </Button>
                 }
                 title={task.name}
@@ -183,7 +181,8 @@ export function TaskList() {
                     <p className="text-muted-foreground italic">Sin descripción.</p>
                   )}
                   <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                    <CalendarDays className="h-3.5 w-3.5" /> Fecha límite: {formatDeadline(task.deadline)}
+                    <CalendarDays className="h-3.5 w-3.5" /> Fecha límite:{' '}
+                    {formatDeadline(task.deadline)}
                   </p>
                   {task.microObjectives && task.microObjectives.length > 0 && (
                     <div>

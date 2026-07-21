@@ -3,6 +3,8 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
+ENV NODE_ENV=production
+
 # Copy root workspace files needed to install dependencies for the monorepo
 COPY package.json package-lock.json* ./
 COPY apps/backend/package.json ./apps/backend/package.json
@@ -35,6 +37,10 @@ WORKDIR /app
 
 # Copy only production artifacts from builder
 COPY --from=builder /app/apps/backend/dist ./apps/backend/dist
+COPY --from=builder /app/apps/backend/package.json ./apps/backend/package.json
+COPY --from=builder /app/apps/backend/prisma.config.ts ./apps/backend/prisma.config.ts
+COPY --from=builder /app/apps/backend/prisma ./apps/backend/prisma
+COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/node_modules ./node_modules
 
 # Non-root user for security
@@ -43,4 +49,4 @@ USER appuser
 
 EXPOSE 3001
 
-CMD ["node", "apps/backend/dist/main.js"]
+CMD ["npm", "run", "start:prod", "--workspace", "@mindflow/backend"]

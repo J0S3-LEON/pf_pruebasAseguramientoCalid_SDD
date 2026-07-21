@@ -44,14 +44,23 @@ export function DashboardSummary() {
   return (
     <div className="grid gap-4 sm:grid-cols-3">
       {cards.map(({ key, label, icon: Icon, tone }) => (
-        <div key={key} className="group rounded-2xl border bg-card/85 p-5 shadow-sm backdrop-blur transition-all hover:-translate-y-0.5 hover:shadow-lg">
+        <div
+          key={key}
+          className="group rounded-2xl border bg-card/85 p-5 shadow-sm backdrop-blur transition-all hover:-translate-y-0.5 hover:shadow-lg"
+        >
           <div className="flex items-center justify-between">
-            <div className={`grid h-11 w-11 place-items-center rounded-xl bg-gradient-to-br ${tones[tone]}`}>
+            <div
+              className={`grid h-11 w-11 place-items-center rounded-xl bg-gradient-to-br ${tones[tone]}`}
+            >
               <Icon className="h-5 w-5" />
             </div>
             <TrendingUp className="h-4 w-4 text-muted-foreground/50 transition-colors group-hover:text-primary" />
           </div>
-          {isLoading ? <Skeleton className="mt-5 h-8 w-20" /> : <p className="mt-5 text-3xl font-bold tracking-tight">{values[key]}</p>}
+          {isLoading ? (
+            <Skeleton className="mt-5 h-8 w-20" />
+          ) : (
+            <p className="mt-5 text-3xl font-bold tracking-tight">{values[key]}</p>
+          )}
           <p className="mt-1 text-sm text-muted-foreground">{label}</p>
         </div>
       ))}
