@@ -1,9 +1,12 @@
 import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
 import './globals.css';
 
+const inter = Inter({ subsets: ['latin'] });
+
 export const metadata: Metadata = {
-  title: 'MindFlow',
-  description: 'Sistema de gestión cognitiva adaptativa para estudiantes',
+  title: 'MindFlow — Gestión Cognitiva Adaptativa',
+  description: 'Plataforma de gestión cognitiva adaptativa para estudiantes impulsada por IA',
 };
 
 export default function RootLayout({
@@ -13,7 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body>{children}</body>
+      <body className={inter.className}>{children}</body>
     </html>
   );
 }

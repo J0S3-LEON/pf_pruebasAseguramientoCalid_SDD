@@ -1,16 +1,22 @@
 /**
  * Módulo de acceso a la API del backend MindFlow.
  *
- * Expone la función apiFetch que:
- *  - Agrega automáticamente el header Authorization: Bearer <JWT> si existe un token.
- *  - Serializa el body como JSON cuando se proporciona.
- *  - Lanza un error con el mensaje del servidor cuando la respuesta no es 2xx.
+ * Estrategia de URL:
+ *  - En el NAVEGADOR: usa ruta relativa '/api/v1' para que el proxy de
+ *    next.config.js (rewrites) reenvíe la petición al backend NestJS.
+ *    Esto evita problemas de CORS ya que la petición va al mismo origen.
+ *  - En el SERVIDOR (SSR): usa la URL absoluta del backend directamente
+ *    porque el proxy de Next.js no aplica en el servidor.
  *
  * Requisitos: 1.5, 5.1, 9.3
  */
 
+// En el browser usamos ruta relativa (el proxy de Next.js maneja el reenvío).
+// En el servidor (SSR/RSC) usamos la URL absoluta del backend.
 const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001/api/v1';
+  typeof window !== 'undefined'
+    ? '/api/v1'
+    : (process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001/api/v1');
 
 /** Clave bajo la cual se almacena el JWT en localStorage. */
 const JWT_STORAGE_KEY = 'mindflow_token';

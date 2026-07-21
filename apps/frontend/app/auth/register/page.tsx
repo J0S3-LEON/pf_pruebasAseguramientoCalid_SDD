@@ -44,7 +44,6 @@ import { apiFetch, setToken } from '@/lib/api';
 
 const registerSchema = z
   .object({
-    name: z.string().min(1, 'El nombre es obligatorio'),
     email: z.string().email('Introduce un correo electrónico válido'),
     password: z
       .string()
@@ -60,8 +59,12 @@ type RegisterFormValues = z.infer<typeof registerSchema>;
 
 // ─── Tipos de respuesta de la API ────────────────────────────────────────────
 
-interface AuthResponse {
-  access_token: string;
+interface RegisterResponse {
+  message: string;
+}
+
+interface LoginResponse {
+  token: string;
 }
 
 // ─── Componente ──────────────────────────────────────────────────────────────
@@ -74,7 +77,6 @@ export default function RegisterPage() {
   const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
-      name: '',
       email: '',
       password: '',
       confirmPassword: '',
@@ -86,21 +88,30 @@ export default function RegisterPage() {
     setIsLoading(true);
 
     try {
-      const data = await apiFetch<AuthResponse>('/auth/register', {
+      // 1. Registrar la cuenta
+      await apiFetch<RegisterResponse>('/auth/register', {
         method: 'POST',
         body: {
-          name: values.name,
           email: values.email,
           password: values.password,
         },
       });
 
-      // Guardar JWT en localStorage (cliente) y en cookie HttpOnly (servidor)
-      setToken(data.access_token);
+      // 2. Hacer login automático con las mismas credenciales
+      const loginData = await apiFetch<LoginResponse>('/auth/login', {
+        method: 'POST',
+        body: {
+          email: values.email,
+          password: values.password,
+        },
+      });
+
+      // 3. Guardar JWT en localStorage y en cookie HttpOnly
+      setToken(loginData.token);
       await fetch('/api/auth/set-cookie', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ token: data.access_token }),
+        body: JSON.stringify({ token: loginData.token }),
       });
 
       router.push('/dashboard');
@@ -112,7 +123,8 @@ export default function RegisterPage() {
           error.message.toLowerCase().includes('ya existe') ||
           error.message.toLowerCase().includes('already') ||
           error.message.toLowerCase().includes('duplicado') ||
-          error.message.toLowerCase().includes('conflict')
+          error.message.toLowerCase().includes('conflict') ||
+          error.message.toLowerCase().includes('cuenta registrada')
         ) {
           form.setError('email', {
             type: 'server',
@@ -144,25 +156,6 @@ export default function RegisterPage() {
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            {/* Nombre */}
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Nombre completo</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Juan García"
-                      autoComplete="name"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
             {/* Email */}
             <FormField
               control={form.control}

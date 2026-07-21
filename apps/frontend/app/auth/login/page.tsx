@@ -57,7 +57,7 @@ type LoginFormValues = z.infer<typeof loginSchema>;
 // ─── Tipos de respuesta de la API ────────────────────────────────────────────
 
 interface AuthResponse {
-  access_token: string;
+  token: string;
 }
 
 // ─── Componente ──────────────────────────────────────────────────────────────
@@ -89,11 +89,11 @@ export default function LoginPage() {
       });
 
       // Guardar JWT en localStorage (cliente) y en cookie HttpOnly (servidor)
-      setToken(data.access_token);
+      setToken(data.token);
       await fetch('/api/auth/set-cookie', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ token: data.access_token }),
+        body: JSON.stringify({ token: data.token }),
       });
 
       router.push('/dashboard');
