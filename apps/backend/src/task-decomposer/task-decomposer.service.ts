@@ -112,11 +112,13 @@ export class TaskDecomposerService {
   private async callLlm(task: Task): Promise<LlmMicroObjective[]> {
     const aiUrl =
       this.config.get<string>('AI_SERVICE_URL') ?? 'https://api.openai.com/v1';
-    const apiKey = this.config.get<string>('AI_SERVICE_API_KEY');
+    const apiKey = this.config.get<string>('AI_SERVICE_API_KEY')?.trim();
+    const isPlaceholderKey =
+      !apiKey || /^(your_|change_me|replace)/i.test(apiKey);
 
-    if (!aiUrl || !apiKey) {
+    if (!aiUrl || isPlaceholderKey) {
       this.logger.error(
-        'AI_SERVICE_URL o AI_SERVICE_API_KEY no configurados en variables de entorno.',
+        'AI_SERVICE_URL o AI_SERVICE_API_KEY no están configurados con valores válidos.',
       );
       throw new BadGatewayException(
         'El servicio de IA no está configurado correctamente.',
@@ -154,9 +156,9 @@ export class TaskDecomposerService {
       });
 
       if (!response.ok) {
-        const errorText = await response.text().catch(() => 'unknown error');
+        const requestId = response.headers.get('x-request-id');
         this.logger.error(
-          `LLM respondió con HTTP ${response.status}: ${errorText}`,
+          `LLM respondió con HTTP ${response.status}${requestId ? ` (request_id=${requestId})` : ''}.`,
         );
         throw new BadGatewayException(
           `El servicio de IA respondió con error HTTP ${response.status}.`,
