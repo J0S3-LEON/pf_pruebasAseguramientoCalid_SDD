@@ -1,0 +1,19 @@
+{
+  "enabled": true,
+  "name": "SDD Spec Change Detector",
+  "description": "Detecta cambios en los archivos de especificación SDD (.kiro/specs/mindflow/) y ejecuta un análisis de impacto automático antes de implementar cualquier cambio en el código.",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      ".kiro/specs/mindflow/requirements.md",
+      ".kiro/specs/mindflow/design.md",
+      ".kiro/specs/mindflow/tasks.md",
+      ".kiro/specs/mindflow/traceability.md"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Un archivo de especificación SDD ha sido modificado. Antes de implementar cualquier cambio en el código, debes:\n\n1. Inspeccionar el diff del archivo modificado (usa `git diff` para obtener los cambios exactos).\n2. Clasificar cada requisito afectado como nuevo, modificado o eliminado.\n3. Normalizar los identificadores al formato canónico `REQ-x.y`.\n4. Consultar `traceability.md` para entender el alcance del impacto.\n5. Analizar el impacto en: arquitectura, base de datos, backend, frontend, API, tests y documentación.\n6. Identificar contradicciones entre requisitos, diseño, tareas, código y tests.\n7. Producir un SDD Change Impact Report en Markdown con:\n   - Identificadores de requisitos afectados\n   - Comportamiento anterior vs. nuevo\n   - Archivos y tests probablemente afectados\n   - Trazabilidad faltante o ambigua\n   - Cambios requeridos en diseño, tareas, migraciones, API y documentación\n   - Riesgos y consideraciones de compatibilidad hacia atrás\n\nNO implementes cambios en el código de producto hasta que el reporte esté completo y el usuario lo apruebe."
+  }
+}

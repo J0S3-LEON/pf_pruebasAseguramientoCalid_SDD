@@ -1,0 +1,84 @@
+name: SDD Change Review
+
+on:
+  pull_request:
+    paths:
+      - '.kiro/specs/**'
+      - '.kiro/steering/sdd-change-management.md'
+      - 'CHANGE_IMPACT_REPORT.md'
+      - '.github/scripts/generate-sdd-impact-report.mjs'
+      - '.github/workflows/sdd-review.yml'
+  push:
+    branches: [main]
+    paths:
+      - '.kiro/specs/**'
+      - '.kiro/steering/sdd-change-management.md'
+      - 'CHANGE_IMPACT_REPORT.md'
+      - '.github/scripts/generate-sdd-impact-report.mjs'
+      - '.github/workflows/sdd-review.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  impact-review:
+    name: Generate SDD impact report
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Resolve comparison range
+        id: range
+        shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          BEFORE_SHA: ${{ github.event.before }}
+          CURRENT_SHA: ${{ github.sha }}
+        run: |
+          if [[ "$EVENT_NAME" == "pull_request" ]]; then
+            base="$PR_BASE_SHA"
+          elif [[ "$EVENT_NAME" == "push" && ! "$BEFORE_SHA" =~ ^0+$ ]]; then
+            base="$BEFORE_SHA"
+          else
+            base="$(git rev-parse HEAD^ 2>/dev/null || git rev-parse HEAD)"
+          fi
+          echo "base=$base" >> "$GITHUB_OUTPUT"
+          echo "head=$CURRENT_SHA" >> "$GITHUB_OUTPUT"
+
+      - name: Generate impact report
+        id: report
+        continue-on-error: true
+        run: >-
+          node .github/scripts/generate-sdd-impact-report.mjs
+          "${{ steps.range.outputs.base }}"
+          "${{ steps.range.outputs.head }}"
+          sdd-change-impact-report.md
+
+      - name: Publish workflow summary
+        if: always()
+        shell: bash
+        run: |
+          if [[ -f sdd-change-impact-report.md ]]; then
+            cat sdd-change-impact-report.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo '# SDD review failed to generate a report' >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Upload impact report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sdd-change-impact-report
+          path: sdd-change-impact-report.md
+          if-no-files-found: error
+
+      - name: Enforce traceability gate
+        if: steps.report.outcome == 'failure'
+        run: |
+          echo 'The SDD report found requirements without traceability.'
+          exit 1

@@ -375,7 +375,7 @@ Stack: Next.js 14 + TypeScript (frontend), NestJS + TypeScript (backend), Postgr
   - Ejecutar todas las pruebas unitarias, de propiedad y de integración disponibles. Asegurarse de que pasan. Consultar al usuario si surge algún problema.
 
 
-- [ ] 21. Escribir pruebas unitarias de ejemplo por módulo
+- [x] 21. Escribir pruebas unitarias de ejemplo por módulo
   - [x] 21.1 Pruebas unitarias de Auth_Service
     - Verificar que `register` lanza HTTP 409 con email duplicado (mock de Prisma).
     - Verificar que `login` lanza HTTP 401 con contraseña incorrecta sin revelar cuál campo es inválido.

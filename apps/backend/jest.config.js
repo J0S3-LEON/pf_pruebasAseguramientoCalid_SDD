@@ -22,8 +22,8 @@ module.exports = {
   // Resolución de módulos internos del monorepo
   moduleNameMapper: {
     '^@mindflow/shared$': '<rootDir>/../../packages/shared/src/index.ts',
-    // Point @prisma/client to the locally-generated client (output in backend/node_modules/.prisma/client)
-    '^@prisma/client$': '<rootDir>/node_modules/.prisma/client',
+    // Point @prisma/client to the workspace-root generated client (npm workspaces hoist deps to root)
+    '^@prisma/client$': '<rootDir>/../../node_modules/.prisma/client',
   },
 
   // Extensiones de módulo soportadas
